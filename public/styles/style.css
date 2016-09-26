@@ -1,0 +1,40 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+}
+
+.scroll-buttons {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    z-index: 1;
+}
+.scroll-buttons button {
+    padding: 12px;
+    background-color: #9dd89f;
+    font-size: 25px;
+}
+
+.scroll {
+    position: absolute;
+}
+
+.scroll1 {
+    top: 70px;
+}
+
+.scroll2 {
+    top: 225px;
+}
+
+.scroll3 {
+    top: 740px;
+}
+
+.scroll4 {
+    top: 3550px;
+    padding-bottom: 300px;
+}
