@@ -35,6 +35,7 @@
 
     function animateScrollTo(x, y, duration, startTime) {
         startTime = (startTime || 0) + performance.now();
+        // startTime = (startTime || 0) + Date.now();
 
         var scrollPos = getScrollPosition();
         var scrollDelta = y - scrollPos.y;
@@ -44,8 +45,10 @@
             if (animateTime > endTime) {
                 animateTime = endTime;
             }
+
             var timeDelta = animateTime - startTime;
             var scrollTest = scrollDelta * Math.pow(timeDelta / duration, 2) + scrollPos.y;
+
             window.scrollTo(x, scrollTest);
 
             if (animateTime < endTime) {
