@@ -13,6 +13,7 @@
     function getPosition(el) {
         var xPos = 0;
         var yPos = 0;
+        var currentScroll = getScrollPosition();
         var xScroll, yScroll;
 
         while (el) {
@@ -27,20 +28,32 @@
         }
 
         return {
-            x: xPos,
-            y: yPos
+            x: xPos + currentScroll.x,
+            y: yPos + currentScroll.y
         };
     }
 
-// elemPos.y + scrollPos.y
-    function animateScrollTo(x, y, duration, time) {
-        time = time || 0;
+    function animateScrollTo(x, y, duration, startTime) {
+        startTime = (startTime || 0) + performance.now();
 
         var scrollPos = getScrollPosition();
-        var scrollDistance = scrollPos.y + y;
+        var scrollDelta = y - scrollPos.y;
+        var endTime = startTime + duration;
 
-        console.log('Elem:', x, y);
-        console.log('Scroll:', scrollPos.x, scrollPos.y, scrollDistance);
+        function _animate(animateTime) {
+            if (animateTime > endTime) {
+                animateTime = endTime;
+            }
+            var timeDelta = animateTime - startTime;
+            var scrollTest = scrollDelta * Math.pow(timeDelta / duration, 2) + scrollPos.y;
+            window.scrollTo(x, scrollTest);
+
+            if (animateTime < endTime) {
+                window.requestAnimationFrame(_animate);
+            }
+        }
+        // Start the animation
+        scrollDelta && window.requestAnimationFrame(_animate);
     }
 
     var buttons = document.querySelectorAll('.scroll-buttons button');
@@ -50,8 +63,7 @@
             var elem = document.querySelector(this.dataset.scrollSelector);
             if (elem) {
                 var elemPos = getPosition(elem);
-                var scrollPos = getScrollPosition();
-                animateScrollTo(0, elemPos.y, 2);
+                animateScrollTo(0, elemPos.y, 800);
             }
         };
     });
